@@ -14,6 +14,7 @@ function main() {
     window.addEventListener('keyup', keyUp, false)
 
     // Initializing GL
+    glInit()
 
     // Starting loop
     gameCurrentFrame = Date.now()
@@ -26,6 +27,36 @@ function loop() {
     loopScene()
     gamePreviousFrame = Date.now()
     gameInstance = requestAnimationFrame(loop)
+}
+
+function mouseDown(event) {
+    let canvasRect = canvas.getBoundingClientRect()
+    let x = event.clientX - canvasRect.left
+    let y = event.clientY - canvasRect.top
+    let button = event.button
+
+    mouseDownScene(x, y, button)
+}
+
+function mouseUp(event) {
+    let canvasRect = canvas.getBoundingClientRect()
+    let x = event.clientX - canvasRect.left
+    let y = event.clientY - canvasRect.top
+    let button = event.button
+
+    mouseUpScene(x, y, button)
+}
+
+function keyDown(event) {
+    let key = event.key
+    
+    keyDownScene(key)
+}
+
+function keyUp(event) {
+    let key = event.key
+        
+    keyUpScene(key)
 }
 
 function errorHandle(err, url, line, col, obj) {
