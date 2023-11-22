@@ -13,6 +13,9 @@ function main() {
     window.addEventListener('keydown', keyDown, false)
     window.addEventListener('keyup', keyUp, false)
 
+    // Loading texture
+    imageLoad()
+
     // Initializing GL
     glInit()
 

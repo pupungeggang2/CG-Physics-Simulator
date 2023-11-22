@@ -9,9 +9,24 @@ let gameFramePrevious
 let delta
 
 // Variables related to state
-let state = 'pause'
-let insertMode = ''
+let state = 'Pause' // Pause, Running
+let statePause = 'Idle' // Idle, Adding, Editing
+let addMode = ''
+let addPhase = ''
+let showDots = false
+
+// Variables related to input
+let input = {
+    mousePressed : false,
+    cameraPressed : false,
+}
+
+// Variables related to program
 
 // Variables related to space
 let bodyListSoft = []
-let bodyListRigid = []
+let bodyListStatic = []
+
+// Variables related to 3D Implementation
+let GLBodyListSoft = []
+let GLBodyListStatic = []
