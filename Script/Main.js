@@ -6,7 +6,7 @@ function main() {
     // Assigning canvas variable into canvas, context into canvas' webgl context.
     canvas = document.getElementById('Screen')
     canvasUI = document.getElementById('UI')
-    context = canvas.getContext('webgl')
+    gl = canvas.getContext('webgl')
     contextUI = canvasUI.getContext('2d')
 
     // Adding input function
@@ -29,6 +29,7 @@ function main() {
 
 function loop() {
     gameCurrentFrame = Date.now()
+    delta = gameCurrentFrame - gamePreviousFrame
     loopScene()
     gamePreviousFrame = Date.now()
     gameInstance = requestAnimationFrame(loop)

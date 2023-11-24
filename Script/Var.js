@@ -1,6 +1,6 @@
 // Variables related to canvas
 let canvas
-let context
+let gl
 let canvasUI
 let contextUI
 
@@ -20,8 +20,14 @@ let showDots = false
 // Variables related to input
 let input = {
     mousePressed : false,
+    mousePrevious : [0, 0]
     cameraPressed : false,
 }
+
+// GL variables
+let shaderVert
+let shaderFrag
+let shaderProgram
 
 // Variables related to program
 
@@ -30,5 +36,10 @@ let bodyListSoft = []
 let bodyListStatic = []
 
 // Variables related to 3D Implementation
+let camera = {
+    
+}
+
 let GLBodyListSoft = []
 let GLBodyListStatic = []
+let a = -1
