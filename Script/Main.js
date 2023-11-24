@@ -5,7 +5,9 @@ window.oncontextmenu = rightClick
 function main() {
     // Assigning canvas variable into canvas, context into canvas' webgl context.
     canvas = document.getElementById('Screen')
+    canvasUI = document.getElementById('UI')
     context = canvas.getContext('webgl')
+    contextUI = canvasUI.getContext('2d')
 
     // Adding input function
     canvas.addEventListener('mousedown', mouseDown, false)

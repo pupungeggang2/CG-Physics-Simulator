@@ -1,6 +1,8 @@
 // Variables related to canvas
 let canvas
 let context
+let canvasUI
+let contextUI
 
 // Variables related to loop function
 let gameInstance
