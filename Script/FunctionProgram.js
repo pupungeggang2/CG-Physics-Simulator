@@ -18,4 +18,3 @@ function glInit() {
     gl.linkProgram(shaderProgram)
     gl.useProgram(shaderProgram)
 }
-    
