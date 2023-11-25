@@ -40,7 +40,8 @@ let camera = {
     
 }
 
+let matrixView
 let GLBodyListSoft = []
-let GLBodyListStatic = [[-0.2, 0.2, 0.3, 0.4, 0.7, 0.9]]
+let GLBodyListStatic = [[-0.5, 0.5, -0.5, 0.5, -0.5, -0.2]]
 let vertices = []
 let a = -1

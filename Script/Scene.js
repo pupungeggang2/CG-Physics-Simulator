@@ -10,10 +10,11 @@ function displayUI() {
 
 function display() {
     drawSceneInit()
-    if (a < 1) {
-        a += 0.5 * delta / 1000
-    }
-
+    matrixView = matrixProjection(-1, 1, -1, 1, -1, -0.1)
+    
+    let matrixLocation = gl.getUniformLocation(shaderProgram, 'u_matrix')
+    gl.uniformMatrix4fv(matrixLocation, false, matrixView)
+    
     // Defining Variables
     generateVerticeBuffer()
     let indices = []
@@ -37,7 +38,7 @@ function display() {
     // Associating shaders to buffers
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer)
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
-    let coord = gl.getAttribLocation(shaderProgram, 'coordinates')
+    let coord = gl.getAttribLocation(shaderProgram, 'a_position')
     gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0)
     gl.enableVertexAttribArray(coord)
 
