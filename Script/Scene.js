@@ -13,14 +13,15 @@ function display() {
     if (a < 1) {
         a += 0.5 * delta / 1000
     }
-    
-    let vertices = [
-        0, 0, 0,
-        a, 0, 0,
-        a, a, 0
-    ]
 
-    let indices = [0, 1, 2]
+    // Defining Variables
+    generateVerticeBuffer()
+    let indices = []
+
+    // Making indices
+    for (let i = 0; i * 3 < vertices.length; i++) {
+        indices.push(i)
+    }
 
     // Buffer
     let vertexBuffer = gl.createBuffer()

@@ -20,7 +20,7 @@ let showDots = false
 // Variables related to input
 let input = {
     mousePressed : false,
-    mousePrevious : [0, 0]
+    mousePrevious : [0, 0],
     cameraPressed : false,
 }
 
@@ -41,5 +41,6 @@ let camera = {
 }
 
 let GLBodyListSoft = []
-let GLBodyListStatic = []
+let GLBodyListStatic = [[-0.2, 0.2, 0.3, 0.4, 0.7, 0.9]]
+let vertices = []
 let a = -1
