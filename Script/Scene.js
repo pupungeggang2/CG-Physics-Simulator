@@ -19,7 +19,6 @@ function displayUI() {
 
 function display() {
     drawSceneInit()
-
     // Drawing
     gl.clearColor(0, 0, 0, 1)
     gl.enable(gl.DEPTH_TEST)
@@ -27,7 +26,7 @@ function display() {
     gl.viewport(0, 0, canvas.width, canvas.height)
 
     // Drawing objects
-    drawBackPlate()
+    drawBackPlate()   
 }
 
 function mouseUpScene(x, y, button) {

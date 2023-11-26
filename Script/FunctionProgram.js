@@ -34,14 +34,12 @@ function glInit() {
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer)
     indexBuffer = gl.createBuffer()
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
+    currentColor = gl.getUniformLocation(shaderProgram, 'u_color')
 
     // Associating shaders to buffers
     let coord = gl.getAttribLocation(shaderProgram, 'a_position')
     gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0)
     gl.enableVertexAttribArray(coord)
-
-    // Setting color
-    colorLocation = gl.getUniformLocation(shaderProgram, 'u_color')
 }
 
 // Matrix View
