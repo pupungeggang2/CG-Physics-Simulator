@@ -34,7 +34,12 @@ let bodyListSoft = []
 let bodyListStatic = []
 
 // Variables related to 3D Implementation
-let matrixView
+let matrixView = [
+    1, 0, 0, 0,
+    0, 1, 0, 0,
+    0, 0, -0.5, 0,
+    0, 0, 0, 1
+]
 let systemTransform = [
     1, 0, 0, 0,
     0, 1, 0, 0,

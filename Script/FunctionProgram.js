@@ -137,6 +137,12 @@ function matrixVectorMultiply(mat, vec) {
     return result
 }
 
+function applyTransform(mat, vec) {
+    let vecHomo = [vec[0], vec[1], vec[2], 1]
+    let multipliedVec = matrixVectorMultiply(mat, vecHomo)
+    return [multipliedVec[0] / multipliedVec[3], multipliedVec[1] / multipliedVec[3], multipliedVec[2] / multipliedVec[3]]
+}
+
 function matrixRotate(axis, angle) {
     let angleRad = angle * Math.PI / 180
     let c = Math.cos(angleRad)

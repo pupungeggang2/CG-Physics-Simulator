@@ -1,6 +1,9 @@
 function loopScene() {
     displayUI()
     display()
+
+    systemTransform = matrixMultiply(matrixRotate(0, 0.5), systemTransform)
+    systemTransform = matrixMultiply(matrixRotate(1, 0.5), systemTransform)
 }
 
 function displayUI() {
