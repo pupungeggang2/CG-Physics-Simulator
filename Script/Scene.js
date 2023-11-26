@@ -33,8 +33,11 @@ function display() {
     let indexBuffer = gl.createBuffer()
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW)
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null)
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null)
 
+    let colorLocation = gl.getUniformLocation(shaderProgram, 'u_color')
+    gl.uniform4f(colorLocation, 0.0, 0.0, 1.0, 1.0)
+    
     // Associating shaders to buffers
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer)
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer)

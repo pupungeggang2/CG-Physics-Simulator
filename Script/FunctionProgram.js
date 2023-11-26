@@ -1,12 +1,23 @@
 // Function which creates shader
 function glInit() {
     // Shader
-    let shaderVertCode = document.getElementById('ShaderVertex').innerHTML
+    let shaderVertCode = `
+        attribute vec4 a_position;
+        uniform mat4 u_matrix;
+        void main() {
+            gl_Position = u_matrix * a_position;
+        }
+    `
     shaderVert = gl.createShader(gl.VERTEX_SHADER)
     gl.shaderSource(shaderVert, shaderVertCode)
     gl.compileShader(shaderVert)
 
-    let shaderFragCode = document.getElementById('ShaderFragment').innerHTML
+    let shaderFragCode = `
+        uniform vec4 u_color;
+        void main() {
+            gl_FragColor = u_color;
+        }
+    `
     shaderFrag = gl.createShader(gl.FRAGMENT_SHADER)
     gl.shaderSource(shaderFrag, shaderFragCode)
     gl.compileShader(shaderFrag)

@@ -26,18 +26,7 @@
     <body>
         <canvas id="UI" width="640" height="160"></canvas>
         <canvas id="Screen" width="640" height="640"></canvas>
-        <script id="ShaderVertex" type="x-shader/x-vertex">
-            attribute vec4 a_position;
-            uniform mat4 u_matrix;
-            void main(void) {
-                gl_Position = u_matrix * a_position;
-            }
-        </script>
-        <script id="ShaderFragment" type="x-shader/x-fragment">
-            void main(void) {
-                gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-            }
-        </script>
+
         <script src="Script/Asset.js"></script>
         <script src="Script/UI.js"></script>
         <script src="Script/Const.js"></script>
