@@ -17,6 +17,11 @@ let addMode = ''
 let addPhase = ''
 let showDots = false
 
+// GL shader variables
+let shaderVert
+let shaderFrag
+let shaderProgram
+
 // Variables related to input
 let input = {
     mousePressed : false,
@@ -24,24 +29,20 @@ let input = {
     cameraPressed : false,
 }
 
-// GL variables
-let shaderVert
-let shaderFrag
-let shaderProgram
-
-// Variables related to program
-
 // Variables related to space
 let bodyListSoft = []
 let bodyListStatic = []
 
 // Variables related to 3D Implementation
-let camera = {
-    
-}
-
 let matrixView
+let systemTransform = [
+    1, 0, 0, 0,
+    0, 1, 0, 0,
+    0, 0, 1, 0,
+    0, 0, 0, 1
+]
 let GLBodyListSoft = []
-let GLBodyListStatic = [[-0.5, 0.5, -0.5, 0.5, -0.5, -0.2]]
+let GLBodyListStatic = [[]]
 let vertices = []
-let a = -1
+let indices = []
+let colors = []

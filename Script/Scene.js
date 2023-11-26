@@ -10,19 +10,19 @@ function displayUI() {
 
 function display() {
     drawSceneInit()
-    matrixView = matrixProjection(-1, 1, -1, 1, -1, -0.1)
-    
+    matrixView = matrixViewBasic()
     let matrixLocation = gl.getUniformLocation(shaderProgram, 'u_matrix')
     gl.uniformMatrix4fv(matrixLocation, false, matrixView)
-    
-    // Defining Variables
-    generateVerticeBuffer()
-    let indices = []
 
-    // Making indices
-    for (let i = 0; i * 3 < vertices.length; i++) {
-        indices.push(i)
-    }
+    vertices = [
+        1, 1, 0,
+        -1, -1, 0,
+        1, -1, 0,
+        -1, 1, 0,
+        1, -1, 0,
+    ]
+    indices = [0, 1, 2, 3, 4]
+    colors = []
 
     // Buffer
     let vertexBuffer = gl.createBuffer()
@@ -33,7 +33,7 @@ function display() {
     let indexBuffer = gl.createBuffer()
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW)
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null)
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null)
 
     // Associating shaders to buffers
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer)
@@ -47,7 +47,8 @@ function display() {
     gl.enable(gl.DEPTH_TEST)
     gl.clear(gl.COLOR_BUFFER_BIT)
     gl.viewport(0, 0, canvas.width, canvas.height)
-    gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0)
+    gl.drawArrays(gl.TRIANGLES, 0, 3)
+    gl.drawArrays(gl.LINES, 3, 2)
 }
 
 function mouseUpScene(x, y, button) {

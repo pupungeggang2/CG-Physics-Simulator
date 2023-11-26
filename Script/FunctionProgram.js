@@ -28,42 +28,35 @@ function matrixViewBasic() {
     ]
 }
 
-function matrixProjection(l, r, b, t, f, n) {
-    return [
-        2 * n / (r - l), 0, (r + l) / (r - l), 0,
-        0, 2 * n / (t - b), (t + b) / (t - b), 0,
-        0, 0, -(f + n) / (f - n), 2 * n * f / (n - f),
-        0, 0, -1, 0
-    ]
+// Vector Operation
+function vectorAdd(vec1, vec2) {
+    let result = []
+        
+    for (let i = 0; i < vec1.length; i++) {
+        result.push(vec1[i] + vec2[i])    
+    }
+    
+    return result
 }
 
-function matrixPerspective(FoV, aspect, near, far) {
-    let radFoV = FoV * Math.PI / 180
-    let f = Math.tan(Math.PI * 0.5 - radFoV * 0.5)
-    let rangeInv = 1.0 / (near - far)
-
-    return [
-        f / aspect, 0, 0, 0,
-        0, f, 0, 0,
-        0, 0, (near + far) / rangeInv, -1,
-        0, 0, near * far * rangeInv * 2, 0
-    ]
+function vectorSub(vec1, vec2) {
+    let result = []
+    
+    for (let i = 0; i < vec1.length; i++) {
+        result.push(vec1[i] - vec2[i])    
+    }
+    
+    return result 
 }
 
-function matrixLookAt(camera, target, up) {
-    let zAxis = vectorNormalize(vectorSub(camera, target))
-    let xAxis = vectorNormalize(vectorCross(up, zAxis))
-    let yAxis = vectorNormalize(cross(zAxis, xAxis))
-
-    return [
-        xAxis[0], xAxis[1], xAxis[2], 0,
-        yAxis[0], yAxis[1], yAxis[2], 0,
-        zAxis[0], zAxis[1], zAxis[2], 0,
-        camera[0], camera[1], camera[2], 1
-   ]
+function vectorNorm(vec) {
+    sum = 0
+    for (let i = 0; i < vec.length; i++) {
+        sum += vec[i] * vec[i]
+    }
+    return Math.sqrt(sum)
 }
 
-// Matrix Operation
 function vectorNormalize(vec) {
     sum = 0
     for (let i = 0; i < vec.length; i++) {
@@ -88,16 +81,7 @@ function vectorCross(vec1, vec2) {
     ]
 }
 
-function vectorSub(vec1, vec2) {
-    let result = []
-    
-    for (let i = 0; i < vec1.length; i++) {
-        result.push(vec1[i] - vec2[i])    
-    }
-    
-    return result 
-}
-
+// Matrix operation
 function matrixIdentity() {
     return [
         1, 0, 0, 0,
@@ -156,4 +140,22 @@ function matrixRotate(axis, angle) {
             0, 0, 0, 1
         ]
     }
+}
+
+function matrixScale(x, y, z) {
+    return [
+        x, 0, 0, 0,
+        0, y, 0, 0,
+        0, 0, z, 0,
+        0, 0, 0, 1
+    ]
+}
+
+function matrixTranslate(x, y, z) {
+    return [
+        1, 0, 0, x,
+        0, 1, 0, y,
+        0, 0, 1, z,
+        0, 0, 0, 1
+    ]
 }
