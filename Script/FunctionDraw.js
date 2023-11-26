@@ -2,25 +2,18 @@ function drawSceneInit() {
     matrixView = matrixViewBasic()
     let matrixLocation = gl.getUniformLocation(shaderProgram, 'u_matrix')
     gl.uniformMatrix4fv(matrixLocation, false, matrixView)
-
-    // Binding Buffer
-    vertexBuffer = gl.createBuffer()
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer)
-    indexBuffer = gl.createBuffer()
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
-
-    // Associating shaders to buffers
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer)
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
-    let coord = gl.getAttribLocation(shaderProgram, 'a_position')
-    gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0)
-    gl.enableVertexAttribArray(coord)
 }
 
 function drawBackPlate() {
-    
+    gl.uniform4f(currentColor, 0.8, 0.9, 0.7, 1.0)
+    drawCuboid([[-0.8, -0.8, -0.1], [0.8, -0.8, -0.1], [0.8, 0.8, -0.1], [0.8, -0.8, -0.1], [-0.8, -0.8, 0.1], [0.8, -0.8, 0.1], [0.8, 0.8, 0.1], [0.8, -0.8, 0.1]])
 }
 
-function drawCuboid() {
-    
+function drawCuboid(v) {
+    let points = [[1, 2, 3], [1, 3, 4]]
+    for (let i = 0; i < points.length; i++) {
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([v[points[i][0]][0], v[points[i][0]][1], v[points[i][0]][2], v[points[i][1]][0], v[points[i][1]][1], v[points[i][1]][2], v[points[i][2]][0], v[points[i][2]][1], v[points[i][2]][2]]), gl.STATIC_DRAW)
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array([0, 1, 2]), gl.STATIC_DRAW)
+        gl.drawArrays(gl.TRIANGLES, 0, 3)
+    }
 }

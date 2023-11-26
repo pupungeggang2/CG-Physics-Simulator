@@ -43,5 +43,6 @@ let systemTransform = [
 ]
 let vertexBuffer
 let indexBuffer
+let currentColor
 let GLBodyListSoft = [[]]
 let GLBodyListStatic = [[]]
