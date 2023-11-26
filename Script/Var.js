@@ -41,8 +41,7 @@ let systemTransform = [
     0, 0, 1, 0,
     0, 0, 0, 1
 ]
-let GLBodyListSoft = []
+let vertexBuffer
+let indexBuffer
+let GLBodyListSoft = [[]]
 let GLBodyListStatic = [[]]
-let vertices = []
-let indices = []
-let colors = []

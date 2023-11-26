@@ -1,30 +1,26 @@
-// UI initialization. Called every frame
-function drawSceneUIInit() {
-    contextUI.font = '32px neodgm'
-    contextUI.textAlign = 'left'
-    contextUI.textBaseline = 'top'
-    contextUI.fillStyle = 'Black'
-    contextUI.strokeStyle = 'Black'
-    contextUI.lineWidth = 2
-    contextUI.clearRect(0, 0, 640, 160)
-}
-
 function drawSceneInit() {
-    
+    matrixView = matrixViewBasic()
+    let matrixLocation = gl.getUniformLocation(shaderProgram, 'u_matrix')
+    gl.uniformMatrix4fv(matrixLocation, false, matrixView)
+
+    // Binding Buffer
+    vertexBuffer = gl.createBuffer()
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer)
+    indexBuffer = gl.createBuffer()
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
+
+    // Associating shaders to buffers
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer)
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer)
+    let coord = gl.getAttribLocation(shaderProgram, 'a_position')
+    gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0)
+    gl.enableVertexAttribArray(coord)
 }
 
 function drawBackPlate() {
     
 }
 
-function generateVerticeBuffer() {
-    vertices = []
-}
-
-function generateIndiceBuffer() {
-    indices = []
-}
-
-function generateColorBuffer() {
-    colors = []
+function drawCuboid() {
+    
 }
