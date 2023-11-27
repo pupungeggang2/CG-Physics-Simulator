@@ -30,17 +30,46 @@ function display() {
 }
 
 function mouseUpScene(x, y, button) {
-    
+    if (button === 0) {
+        input.mousePressed = false
+    }
 }
 
 function mouseDownScene(x, y, button) {
+    if (button === 0) {
+        input.mousePressed = true
+    }
+}
+
+function mouseMoveScene(x, y, button) {
+    let gPosition = [(x - canvas.width / 2) / (canvas.width / 2), (-(y - canvas.height / 2)) / (canvas.height / 2)]
     
+    if (input.cameraPressed === true && input.mousePressed === true) {
+        let diff = [input.mousePrevious[0] - gPosition[0], input.mousePrevious[1] - gPosition[1]]
+        debug.innerHTML = `${input.cameraPressed}, ${diff[0].toFixed(3)}, ${diff[1].toFixed(3)}`
+        systemTransform = matrixMultiply(matrixRotate(1, diff[0] * -40), systemTransform)
+        systemTransform = matrixMultiply(matrixRotate(0, diff[1] * 40), systemTransform)
+    }
+    
+    input.mousePrevious = gPosition
 }
 
 function keyUpScene(key) {
-    
+    if (state === 'Pause') {
+        if (key === 'c') {
+            input.cameraPressed = false
+        } else if (key === 'e') {
+            input.selectPressed = false
+        }
+    }
 }
 
 function keyDownScene(key) {
-    
+    if (state === 'Pause') {
+        if (key === 'c') {
+            input.cameraPressed = true
+        } else if (key === 'e') {
+            input.selectPressed = true
+        }
+    }
 }

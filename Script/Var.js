@@ -3,6 +3,7 @@ let canvas
 let gl
 let canvasUI
 let contextUI
+let debug
 
 // Variables related to loop function
 let gameInstance
@@ -27,6 +28,7 @@ let input = {
     mousePressed : false,
     mousePrevious : [0, 0],
     cameraPressed : false,
+    selectPressed : false,
 }
 
 // Variables related to space

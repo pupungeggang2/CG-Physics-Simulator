@@ -8,10 +8,13 @@ function main() {
     canvasUI = document.getElementById('UI')
     gl = canvas.getContext('webgl')
     contextUI = canvasUI.getContext('2d')
+    debug = document.getElementById('Debug')
 
     // Adding input function
     canvas.addEventListener('mousedown', mouseDown, false)
     canvas.addEventListener('mouseup', mouseUp, false)
+    canvas.addEventListener('mousemove', mouseMove, false)
+    window.addEventListener('mouseup', mouseUpWindow, false)
     window.addEventListener('keydown', keyDown, false)
     window.addEventListener('keyup', keyUp, false)
 
@@ -51,6 +54,21 @@ function mouseUp(event) {
     let button = event.button
 
     mouseUpScene(x, y, button)
+}
+
+function mouseMove(event) {
+    let canvasRect = canvas.getBoundingClientRect()
+    let x = event.clientX - canvasRect.left
+    let y = event.clientY - canvasRect.top
+    let button = event.button
+
+    mouseMoveScene(x, y, button)
+}
+
+function mouseUpWindow(event) {
+    if (event.button === 0) {
+        input.mousePressed = false
+    }
 }
 
 function keyDown(event) {
