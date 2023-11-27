@@ -73,6 +73,24 @@ function vectorSub(vec1, vec2) {
     return result 
 }
 
+function vectorDot(vec1, vec2) {
+    let result = 0
+
+    for (let i = 0; i < vec1.length; i++) {
+        result += vec1[i] * vec2[i]
+    }
+
+    return result
+}
+
+function vectorProjection(vec1, vec2) {
+    return vectorDot(vec1, vec2) / (vectorNorm(vec1) * vectorNorm(vec2))   
+}
+
+function vectorAngle(vec1, vec2) {
+    return Math.acos(vectorDot(vec1, vec2) / (vectorNorm(vec1) * vectorNorm(vec2)))
+}
+
 function vectorNorm(vec) {
     sum = 0
     for (let i = 0; i < vec.length; i++) {

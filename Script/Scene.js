@@ -26,6 +26,7 @@ function display() {
     gl.viewport(0, 0, canvas.width, canvas.height)
 
     // Drawing objects
+    drawAxis()
     drawBackPlate()   
 }
 
@@ -46,7 +47,6 @@ function mouseMoveScene(x, y, button) {
     
     if (input.cameraPressed === true && input.mousePressed === true) {
         let diff = [input.mousePrevious[0] - gPosition[0], input.mousePrevious[1] - gPosition[1]]
-        debug.innerHTML = `${input.cameraPressed}, ${diff[0].toFixed(3)}, ${diff[1].toFixed(3)}`
         systemTransform = matrixMultiply(matrixRotate(1, diff[0] * -40), systemTransform)
         systemTransform = matrixMultiply(matrixRotate(0, diff[1] * 40), systemTransform)
     }
