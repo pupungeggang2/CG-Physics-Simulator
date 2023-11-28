@@ -8,13 +8,11 @@ function displayUI() {
 
     if (state === 'Pause') {
         contextUI.fillText('Soft Body Physics Simulator (Paused)', UI.text1[0], UI.text1[1])
-
-        if (statePause === 'Idle') {
-            drawUIIdle()
-        }
     } else if (state === 'Running') {
         contextUI.fillText('Soft Body Physics Simulator (Running)', UI.text1[0], UI.text1[1])
     }
+
+    drawUI()
 }
 
 function display() {
@@ -45,13 +43,27 @@ function mouseDownScene(x, y, button) {
 function mouseMoveScene(x, y, button) {
     let gPosition = [(x - canvas.width / 2) / (canvas.width / 2), (-(y - canvas.height / 2)) / (canvas.height / 2)]
     
-    if (input.cameraPressed === true && input.mousePressed === true) {
+    if (statePause === 'Rotate' && input.mousePressed === true) {
         let diff = [input.mousePrevious[0] - gPosition[0], input.mousePrevious[1] - gPosition[1]]
         systemTransform = matrixMultiply(matrixRotate(1, diff[0] * -40), systemTransform)
         systemTransform = matrixMultiply(matrixRotate(0, diff[1] * 40), systemTransform)
     }
     
     input.mousePrevious = gPosition
+}
+
+function mouseUpUIScene(x, y, button) {
+    if (state === 'Pause') {
+        if (statePause === 'Idle') {
+            if (pointInsideRectArray(x, y, UI.rotate)) {
+                statePause = 'Rotate'
+            }
+        } else if (statePause === 'Rotate') {
+            if (pointInsideRectArray(x, y, UI.rotate)) {
+                statePause = 'Idle'
+            }
+        }
+    }
 }
 
 function keyUpScene(key) {

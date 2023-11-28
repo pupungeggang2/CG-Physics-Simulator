@@ -29,7 +29,7 @@ function drawBackPlate() {
         [-0.8, -0.8, -0.05], [0.8, -0.8, -0.05], [0.8, 0.8, -0.05], [-0.8, 0.8, -0.05], [-0.8, -0.8, 0.05], [0.8, -0.8, 0.05], [0.8, 0.8, 0.05], [-0.8, 0.8, 0.05]
     ]
     let c = [
-        [0.9, 0.9, 0.1, 1.0], [0.9, 0.9, 0.1, 1.0], [0.9, 0.9, 0.1, 1.0], [0.9, 0.9, 0.1, 1.0], [0.1, 0.1, 0.1, 1.0], [0.9, 0.9, 0.1, 1.0]
+        [0.5, 0.9, 0.9, 1.0], [0.5, 0.9, 0.9, 1.0], [0.5, 0.9, 0.9, 1.0], [0.5, 0.9, 0.9, 1.0], [0.1, 0.1, 0.1, 1.0], [0.5, 0.9, 0.9, 1.0]
     ]
     drawCuboid(v, c)
 }
@@ -55,7 +55,7 @@ function drawCuboid(v, c) {
         }
         
         let normal = vectorCross(vectorSub(tempVec[0], tempVec[1]), vectorSub(tempVec[2], tempVec[1]))
-        let colorFactor = Math.max(vectorProjection(directionLightRev, normal), 0)
+        let colorFactor = Math.max(vectorProjection(directionLightRev, normal), 0.1)
         gl.uniform4f(currentColor, c[colorIndex][0] * colorFactor, c[colorIndex][1] * colorFactor, c[colorIndex][2] * colorFactor, c[colorIndex][3])
 
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(tempBuffer), gl.STATIC_DRAW)

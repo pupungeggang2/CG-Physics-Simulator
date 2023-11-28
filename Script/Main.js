@@ -14,6 +14,7 @@ function main() {
     canvas.addEventListener('mousedown', mouseDown, false)
     canvas.addEventListener('mouseup', mouseUp, false)
     canvas.addEventListener('mousemove', mouseMove, false)
+    canvasUI.addEventListener('mouseup', mouseUpUI, false)
     window.addEventListener('mouseup', mouseUpWindow, false)
     window.addEventListener('keydown', keyDown, false)
     window.addEventListener('keyup', keyUp, false)
@@ -63,6 +64,15 @@ function mouseMove(event) {
     let button = event.button
 
     mouseMoveScene(x, y, button)
+}
+
+function mouseUpUI(event) {
+    let canvasRect = canvasUI.getBoundingClientRect()
+    let x = event.clientX - canvasRect.left
+    let y = event.clientY - canvasRect.top
+    let button = event.button
+
+    mouseUpUIScene(x, y, button)
 }
 
 function mouseUpWindow(event) {
