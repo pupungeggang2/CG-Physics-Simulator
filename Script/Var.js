@@ -13,7 +13,8 @@ let delta
 
 // Variables related to state
 let state = 'Pause' // Pause, Running
-let statePause = 'Idle' // Idle, Adding, Editing
+let statePause = 'Idle' // Idle, Add, Edit, Rotate
+let stateRunning = 'Idle' // Idle, Camera, Rotate
 let addMode = ''
 let addPhase = ''
 let showDots = false

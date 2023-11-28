@@ -6,8 +6,10 @@ function main() {
     // Assigning canvas variable into canvas, context into canvas' webgl context.
     canvas = document.getElementById('Screen')
     canvasUI = document.getElementById('UI')
+    canvasNum = document.getElementById('Numpad')
     gl = canvas.getContext('webgl')
     contextUI = canvasUI.getContext('2d')
+    contextNum = canvasNum.getContext('2d')
     debug = document.getElementById('Debug')
 
     // Adding input function
@@ -15,6 +17,7 @@ function main() {
     canvas.addEventListener('mouseup', mouseUp, false)
     canvas.addEventListener('mousemove', mouseMove, false)
     canvasUI.addEventListener('mouseup', mouseUpUI, false)
+    canvasNum.addEventListener('mouseup', mouseUpNum, false)
     window.addEventListener('mouseup', mouseUpWindow, false)
     window.addEventListener('keydown', keyDown, false)
     window.addEventListener('keyup', keyUp, false)
@@ -24,6 +27,8 @@ function main() {
 
     // Initializing GL
     glInit()
+
+    drawNumpad()
 
     // Starting loop
     gameCurrentFrame = Date.now()
@@ -75,6 +80,15 @@ function mouseUpUI(event) {
     mouseUpUIScene(x, y, button)
 }
 
+function mouseUpNum(event) {
+    let canvasRect = canvasUI.getBoundingClientRect()
+    let x = event.clientX - canvasRect.left
+    let y = event.clientY - canvasRect.top
+    let button = event.button
+
+    mouseUpNumScene(x, y, button)
+}
+
 function mouseUpWindow(event) {
     if (event.button === 0) {
         input.mousePressed = false
@@ -91,6 +105,24 @@ function keyUp(event) {
     let key = event.key
         
     keyUpScene(key)
+}
+
+function drawNumpad() {
+    contextNum.clearRect(0, 0, 240, 320)
+    contextNum.font = '32px neodgm'
+    contextNum.textAlign = 'left'
+    contextNum.textBaseline = 'top'
+    contextNum.fillStyle = 'Black'
+    contextNum.strokeStyle = 'Black'
+    contextNum.lineWidth = 4
+
+    for (let i = 0; i < 10; i++) {
+        contextNum.strokeRect(UI.number[i][0], UI.number[i][1], UI.number[i][2], UI.number[i][3])
+        contextNum.fillText(`${i}`, UI.number[i][0] + 16, UI.number[i][1] + 24)
+    }
+
+    contextNum.strokeRect(UI.numberErase[0], UI.numberErase[1], UI.numberErase[2], UI.numberErase[3])
+    contextNum.fillText(`<`, UI.numberErase[0] + 16, UI.numberErase[1] + 24)
 }
 
 function errorHandle(err, url, line, col, obj) {

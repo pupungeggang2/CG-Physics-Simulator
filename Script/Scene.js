@@ -31,6 +31,8 @@ function display() {
 function mouseUpScene(x, y, button) {
     if (button === 0) {
         input.mousePressed = false
+        let gPosition = [(x - canvas.width / 2) / (canvas.width / 2), (-(y - canvas.height / 2)) / (canvas.height / 2)]
+        console.log(gPosition)
     }
 }
 
@@ -62,6 +64,13 @@ function mouseUpUIScene(x, y, button) {
             if (pointInsideRectArray(x, y, UI.rotate)) {
                 statePause = 'Idle'
             }
+        }
+    }
+}
+
+function mouseUpNumScene(x, y, button) {
+    if (state === 'Pause') {
+        if (statePause === 'Add') {
         }
     }
 }
