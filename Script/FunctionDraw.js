@@ -35,7 +35,8 @@ function drawBackPlate() {
 }
 
 function drawBodies() {
-    
+    let colorStatic = [0.9, 0.9, 0.9, 1.0]
+    let colorSoft = [0.9, 0.1, 0.5, 1.0]
 }
 
 function drawCuboid(v, c) {
