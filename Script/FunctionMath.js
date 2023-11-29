@@ -165,5 +165,15 @@ function matrixTranslate(x, y, z) {
 }
 
 function convert2Dto3D(x, y) {
-    
+    let planeNormalVector = [0, 0, 1]
+    planeNormalVector = applyTransform(systemTransform, planeNormalVector)
+    let a = planeNormalVector[0]
+    let b = planeNormalVector[1]
+    let c = planeNormalVector[2]
+    let z = (- a * x - b * y) / c
+
+    let point = [x, y, z]
+    let convertedCoordinate = applyTransform(systemTransformInverse, point)
+
+    return [convertedCoordinate[0], convertedCoordinate[1]]
 }

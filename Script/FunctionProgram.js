@@ -42,6 +42,28 @@ function glInit() {
     gl.enableVertexAttribArray(coord)
 }
 
+function addObject() {
+    let i1 = input.mouseRect1
+    let i2 = input.mouseRect2
+
+    let vertex = [
+        [Math.min(i1[0], i2[0]), Math.min(i1[1], i2[1]), 0],
+        [Math.max(i1[0], i2[0]), Math.min(i1[1], i2[1]), 0],
+        [Math.max(i1[0], i2[0]), Math.max(i1[1], i2[1]), 0],
+        [Math.min(i1[0], i2[0]), Math.max(i1[1], i2[1]), 0],
+        [Math.min(i1[0], i2[0]), Math.min(i1[1], i2[1]), input.numDepth * 0.01],
+        [Math.max(i1[0], i2[0]), Math.min(i1[1], i2[1]), input.numDepth * 0.01],
+        [Math.max(i1[0], i2[0]), Math.max(i1[1], i2[1]), input.numDepth * 0.01],
+        [Math.min(i1[0], i2[0]), Math.max(i1[1], i2[1]), input.numDepth * 0.01],
+    ]
+
+    if (addMode === 'Static') {
+        GLBodyListStatic.push(vertex)
+    } else if (addMode === 'Soft') {
+        GLBodyListSoft.push(vertex)
+    }
+}
+
 function insertBody() {
     
 }

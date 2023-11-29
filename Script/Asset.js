@@ -8,6 +8,7 @@ let img = {
 
     addStatic : new Image(),
     addSoft : new Image(),
+    next : new Image(),
 
     edit : new Image(),
     move : new Image(),
@@ -26,6 +27,7 @@ function imageLoad() {
 
     img.addStatic.src = 'Image/AddStatic.png'
     img.addSoft.src = 'Image/AddSoft.png'
+    img.next.src = 'Image/Next.png'
 
     img.edit.src = 'Image/Edit.png'
     img.move.src = 'Image/Move.png'

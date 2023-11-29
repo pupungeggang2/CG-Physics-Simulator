@@ -1,5 +1,6 @@
 // UI initialization. Called every frame
 function drawSceneUIInit() {
+    contextNum.font = '32px neodgm'
     contextUI.font = '32px neodgm'
     contextUI.textAlign = 'left'
     contextUI.textBaseline = 'top'
@@ -10,6 +11,21 @@ function drawSceneUIInit() {
 }
 
 function drawUI() {
+    contextNum.clearRect(0, 0, 240, 320)
+    contextNum.textAlign = 'left'
+    contextNum.textBaseline = 'top'
+    contextNum.fillStyle = 'Black'
+    contextNum.strokeStyle = 'Black'
+    contextNum.lineWidth = 4
+
+    for (let i = 0; i < 10; i++) {
+        contextNum.strokeRect(UI.number[i][0], UI.number[i][1], UI.number[i][2], UI.number[i][3])
+        contextNum.fillText(`${i}`, UI.number[i][0] + 32, UI.number[i][1] + 24)
+    }
+
+    contextNum.strokeRect(UI.numberErase[0], UI.numberErase[1], UI.numberErase[2], UI.numberErase[3])
+    contextNum.fillText(`<`, UI.numberErase[0] + 32, UI.numberErase[1] + 24)
+
     if (state === 'Pause') {
         contextUI.drawImage(img.running, UI.pause[0], UI.pause[1])
     } else if (state === 'Running') {
@@ -24,6 +40,23 @@ function drawUI() {
     
     contextUI.drawImage(img.addStatic, UI.addStatic[0], UI.addStatic[1])
     contextUI.drawImage(img.addSoft, UI.addSoft[0], UI.addSoft[1])
+    contextUI.drawImage(img.next, UI.next[0], UI.next[1])
+
+    if (state === 'Pause' && statePause === 'Add') {
+        if (addMode === 'Static') {
+            contextUI.drawImage(img.selectFrame, UI.addStatic[0], UI.addStatic[1])
+        } else if (addMode === 'Soft') {
+            contextUI.drawImage(img.selectFrame, UI.addSoft[0], UI.addSoft[1])
+        }
+    }
+
+    if (statePause === 'Add') {
+        if (addPhase === 'InputDepth' || addPhase === 'InputAngle') {
+            contextUI.fillText(`Depth : ${input.numDepth}`, UI.text2[0], UI.text2[1])
+            contextUI.fillText(`Angle : ${input.numAngle}`, UI.text22[0], UI.text22[1])
+        }
+    }
+    
     contextUI.drawImage(img.edit, UI.edit[0], UI.edit[1])
     contextUI.drawImage(img.move, UI.move[0], UI.move[1])
     contextUI.drawImage(img.remove, UI.remove[0], UI.remove[1])

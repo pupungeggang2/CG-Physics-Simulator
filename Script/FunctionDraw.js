@@ -26,7 +26,7 @@ function drawAxis() {
 
 function drawBackPlate() {
     let v = [
-        [-0.8, -0.8, -0.05], [0.8, -0.8, -0.05], [0.8, 0.8, -0.05], [-0.8, 0.8, -0.05], [-0.8, -0.8, 0.05], [0.8, -0.8, 0.05], [0.8, 0.8, 0.05], [-0.8, 0.8, 0.05]
+        [-0.8, -0.8, -0.1], [0.8, -0.8, -0.1], [0.8, 0.8, -0.1], [-0.8, 0.8, -0.1], [-0.8, -0.8, 0.0], [0.8, -0.8, 0.0], [0.8, 0.8, 0.0], [-0.8, 0.8, 0.0]
     ]
     let c = [
         [0.5, 0.9, 0.9, 1.0], [0.5, 0.9, 0.9, 1.0], [0.5, 0.9, 0.9, 1.0], [0.5, 0.9, 0.9, 1.0], [0.1, 0.1, 0.1, 1.0], [0.5, 0.9, 0.9, 1.0]
@@ -35,8 +35,16 @@ function drawBackPlate() {
 }
 
 function drawBodies() {
-    let colorStatic = [0.9, 0.9, 0.9, 1.0]
-    let colorSoft = [0.9, 0.1, 0.5, 1.0]
+    let colorStatic = [[0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0]]
+    let colorSoft = [[0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0]]
+
+    for (let i = 0; i < GLBodyListStatic.length; i++) {
+        drawCuboid(GLBodyListStatic[i], colorStatic)
+    }
+
+    for (let i = 0; i < GLBodyListSoft.length; i++) {
+        drawCuboid(GLBodyListSoft[i], colorSoft)
+    }
 }
 
 function drawCuboid(v, c) {
@@ -78,4 +86,37 @@ function drawCuboid(v, c) {
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array([0, 1]), gl.STATIC_DRAW)
         gl.drawArrays(gl.LINES, 0, 2)
     }
+}
+
+function drawPlane(p1, p2) {
+    let p1_plane = [p1[0], p1[1], 0]
+    let p2_plane = [p2[0], p2[1], 0]
+    let p3 = [p2[0], p1[1], 0]
+    let p4 = [p1[0], p2[1], 0]
+
+    let transP1 = applyTransform(systemTransformInverse, p1_plane)
+    let transP2 = applyTransform(systemTransformInverse, p2_plane)
+    let transP3 = applyTransform(systemTransformInverse, p3)
+    let transP4 = applyTransform(systemTransformInverse, p4)
+
+    gl.uniform4f(currentColor, 1.0, 0.1, 0.1, 1.0)
+
+    let tempBuffer = [
+        transP1[0], transP1[1], transP1[2],
+        transP2[0], transP2[1], transP2[2],
+        transP3[0], transP3[1], transP3[2],
+        transP4[0], transP4[1], transP4[2],
+        transP1[0], transP1[1], transP1[2],
+        transP3[0], transP3[1], transP3[2],
+        transP3[0], transP3[1], transP3[2],
+        transP2[0], transP2[1], transP2[2],
+        transP2[0], transP2[1], transP2[2],
+        transP4[0], transP4[1], transP4[2],
+        transP4[0], transP4[1], transP4[2],
+        transP1[0], transP1[1], transP1[2],
+    ]
+
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(tempBuffer), gl.STATIC_DRAW)
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]), gl.STATIC_DRAW)
+    gl.drawArrays(gl.LINES, 0, 12)
 }

@@ -17,6 +17,7 @@ let statePause = 'Idle' // Idle, Add, Edit, Rotate
 let stateRunning = 'Idle' // Idle, Camera, Rotate
 let addMode = ''
 let addPhase = ''
+let dragged = false
 let showDots = false
 
 // GL shader variables
@@ -28,8 +29,12 @@ let shaderProgram
 let input = {
     mousePressed : false,
     mousePrevious : [0, 0],
+    mouseRect1 : [0, 0],
+    mouseRect2 : [0, 0],
     cameraPressed : false,
     selectPressed : false,
+    numDepth : 0,
+    numAngle : 0,
 }
 
 // Variables related to space
@@ -49,10 +54,16 @@ let systemTransform = [
     0, 0, 1, 0,
     0, 0, 0, 1
 ]
+let systemTransformInverse = [
+    1, 0, 0, 0,
+    0, 1, 0, 0,
+    0, 0, 1, 0,
+    0, 0, 0, 1
+]
 let vertexBuffer
 let indexBuffer
 let currentColor
 let currentMatrix
 let colors = [0.1, 0.1, 0.1, 1.0]
-let GLBodyListSoft = [[]]
-let GLBodyListStatic = [[]]
+let GLBodyListSoft = []
+let GLBodyListStatic = []
