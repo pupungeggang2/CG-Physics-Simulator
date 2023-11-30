@@ -25,7 +25,7 @@ let shaderVert
 let shaderFrag
 let shaderProgram
 
-// Variables related to input
+// Variables related to input and program
 let input = {
     mousePressed : false,
     mousePrevious : [0, 0],
@@ -35,7 +35,10 @@ let input = {
     selectPressed : false,
     numDepth : 0,
     numAngle : 0,
+    mouseEdit1 : [0, 0]
 }
+
+let selected = [-1, -1]
 
 // Variables related to space
 let bodyListSoft = []

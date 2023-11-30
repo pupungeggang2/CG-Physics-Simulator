@@ -57,10 +57,29 @@ function addObject() {
         [Math.min(i1[0], i2[0]), Math.max(i1[1], i2[1]), input.numDepth * 0.01],
     ]
 
+    let center = [(i1[0] + i2[0]) / 2, (i1[1] + i2[1]) / 2, 0]
+
+    let rotatedVertex = []
+
+    for (let i = 0; i < 8; i++) {
+        let tempVertex = applyTransform(matrixTranslate(-center[0], -center[1], -center[2]), vertex[i])
+        tempVertex = applyTransform(matrixRotate(2, input.numAngle), tempVertex)
+        tempVertex = applyTransform(matrixTranslate(center[0], center[1], center[2]), tempVertex)
+        rotatedVertex.push(tempVertex)
+    }
+
     if (addMode === 'Static') {
-        GLBodyListStatic.push(vertex)
+        GLBodyListStatic.push(rotatedVertex)
     } else if (addMode === 'Soft') {
-        GLBodyListSoft.push(vertex)
+        GLBodyListSoft.push(rotatedVertex)
+    }
+}
+
+function removeObject() {
+    if (selected[0] === 0) {
+        GLBodyListStatic.splice(selected[1], 1)
+    } else if (selected[0] === 1) {
+        GLBodyListSoft.splice(selected[1], 1)
     }
 }
 

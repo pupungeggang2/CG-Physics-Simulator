@@ -35,15 +35,24 @@ function drawBackPlate() {
 }
 
 function drawBodies() {
-    let colorStatic = [[0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0]]
-    let colorSoft = [[0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0]]
+    let colorStatic = [[0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0], [0.9, 0.9, 0.9, 1.0]]
+    let colorSoft = [[0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0], [0.9, 0.1, 0.5, 1.0]]
+    let colorSelected = [[0.1, 0.9, 0.1, 1.0], [0.1, 0.9, 0.1, 1.0], [0.1, 0.9, 0.1, 1.0], [0.1, 0.9, 0.1, 1.0], [0.1, 0.9, 0.1, 1.0], [0.1, 0.9, 0.1, 1.0]]
 
     for (let i = 0; i < GLBodyListStatic.length; i++) {
-        drawCuboid(GLBodyListStatic[i], colorStatic)
+        if (selected[0] === 0 && selected[1] === i) {
+            drawCuboid(GLBodyListStatic[i], colorSelected)
+        } else {
+            drawCuboid(GLBodyListStatic[i], colorStatic)
+        }
     }
 
     for (let i = 0; i < GLBodyListSoft.length; i++) {
-        drawCuboid(GLBodyListSoft[i], colorSoft)
+        if (selected[0] === 1 && selected[1] === i) {
+            drawCuboid(GLBodyListStatic[i], colorSelected)
+        } else {
+            drawCuboid(GLBodyListSoft[i], colorSoft)
+        }
     }
 }
 
@@ -88,29 +97,29 @@ function drawCuboid(v, c) {
     }
 }
 
-function drawPlane(p1, p2) {
-    let p1_plane = [p1[0], p1[1], 0]
-    let p2_plane = [p2[0], p2[1], 0]
-    let p3 = [p2[0], p1[1], 0]
-    let p4 = [p1[0], p2[1], 0]
+function drawPlane() {
+    let p1_plane = [Math.min(input.mouseRect1[0], input.mouseRect2[0]), Math.min(input.mouseRect1[1], input.mouseRect2[1]), 0.01]
+    let p2_plane = [Math.max(input.mouseRect1[0], input.mouseRect2[0]), Math.min(input.mouseRect1[1], input.mouseRect2[1]), 0.01]
+    let p3_plane = [Math.max(input.mouseRect1[0], input.mouseRect2[0]), Math.max(input.mouseRect1[1], input.mouseRect2[1]), 0.01]
+    let p4_plane = [Math.min(input.mouseRect1[0], input.mouseRect2[0]), Math.max(input.mouseRect1[1], input.mouseRect2[1]), 0.01]
 
-    let transP1 = applyTransform(systemTransformInverse, p1_plane)
-    let transP2 = applyTransform(systemTransformInverse, p2_plane)
-    let transP3 = applyTransform(systemTransformInverse, p3)
-    let transP4 = applyTransform(systemTransformInverse, p4)
+    let transP1 = applyTransform(systemTransform, p1_plane)
+    let transP2 = applyTransform(systemTransform, p2_plane)
+    let transP3 = applyTransform(systemTransform, p3_plane)
+    let transP4 = applyTransform(systemTransform, p4_plane)
 
     gl.uniform4f(currentColor, 1.0, 0.1, 0.1, 1.0)
 
     let tempBuffer = [
         transP1[0], transP1[1], transP1[2],
-        transP2[0], transP2[1], transP2[2],
         transP3[0], transP3[1], transP3[2],
+        transP2[0], transP2[1], transP2[2],
         transP4[0], transP4[1], transP4[2],
         transP1[0], transP1[1], transP1[2],
-        transP3[0], transP3[1], transP3[2],
-        transP3[0], transP3[1], transP3[2],
         transP2[0], transP2[1], transP2[2],
         transP2[0], transP2[1], transP2[2],
+        transP3[0], transP3[1], transP3[2],
+        transP3[0], transP3[1], transP3[2],
         transP4[0], transP4[1], transP4[2],
         transP4[0], transP4[1], transP4[2],
         transP1[0], transP1[1], transP1[2],

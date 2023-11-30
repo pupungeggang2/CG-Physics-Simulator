@@ -5,13 +5,6 @@ function loopScene() {
 
 function displayUI() {
     drawSceneUIInit()
-
-    if (state === 'Pause') {
-        contextUI.fillText('Soft Body Physics Simulator (Paused)', UI.text1[0], UI.text1[1])
-    } else if (state === 'Running') {
-        contextUI.fillText('Soft Body Physics Simulator (Running)', UI.text1[0], UI.text1[1])
-    }
-
     drawUI()
 }
 
@@ -28,7 +21,7 @@ function display() {
     drawBackPlate()
     drawBodies()
 
-    if (state === 'Pause' && statePause === 'Add' && dragged === true) {
+    if (state === 'Pause' && statePause === 'Add') {
         drawPlane(input.mouseRect1, input.mouseRect2)
     }
 }
@@ -42,6 +35,29 @@ function mouseUpScene(x, y, button) {
         if (statePause === 'Add') {
             if (addPhase === 'Drag') {
                 dragged = true
+            }
+        } else if (statePause === 'Edit') {
+            let position3D = convert2Dto3D(gPosition[0], gPosition[1])
+            let s = false
+
+            for (let i = 0; i < GLBodyListStatic.length; i++) {
+                if (pointInsidePolygonArray(position3D[0], position3D[1], [[GLBodyListStatic[i][0][0], GLBodyListStatic[i][0][1]], [GLBodyListStatic[i][1][0], GLBodyListStatic[i][1][1]], [GLBodyListStatic[i][2][0], GLBodyListStatic[i][2][1]], [GLBodyListStatic[i][3][0], GLBodyListStatic[i][3][1]]])) {
+                    selected = [0, i]
+                    s = true
+                }
+            }
+
+            if (s === false) {
+                for (let i = 0; i < GLBodyListStatic.length; i++) {
+                    if (pointInsidePolygonArray(position3D[0], position3D[1], [[GLBodyListSoft[i][0][0], GLBodyListSoft[i][0][1]], [GLBodyListSoft[i][1][0], GLBodyListSoft[i][1][1]], [GLBodyListSoft[i][2][0], GLBodyListSoft[i][2][1]], [GLBodyListSoft[i][3][0], GLBodyListSoft[i][3][1]]])) {
+                        selected = [1, i]
+                        s = true
+                    }
+                }
+            }
+
+            if (s === false) {
+                selected = [-1, -1]
             }
         }
     }
@@ -59,6 +75,7 @@ function mouseDownScene(x, y, button) {
                 
                 if (position3D[0] > -0.8 && position3D[0] < 0.8 && position3D[1] > -0.8 && position3D[1] < 0.8) {
                     input.mouseRect1 = [position3D[0], position3D[1]]
+                    input.mouseRect2 = [position3D[0], position3D[1]]
                 }
             }
         }
@@ -104,18 +121,43 @@ function mouseUpUIScene(x, y, button) {
                 statePause = 'Add'
                 addMode = 'Static'
                 addPhase = 'Drag'
+                input.mouseRect1 = [0, 0]
+                input.mouseRect2 = [0, 0]
                 dragged = false
             } else if (pointInsideRectArray(x, y, UI.addSoft)) {
                 statePause = 'Add'
                 addMode = 'Soft'
                 addPhase = 'Drag'
+                input.mouseRect1 = [0, 0]
+                input.mouseRect2 = [0, 0]
                 dragged = false
+            } else if (pointInsideRectArray(x, y, UI.edit)) {
+                statePause = 'Edit'
+                selected = [-1, -1]
             }
         } else if (statePause === 'Rotate') {
             if (pointInsideRectArray(x, y, UI.rotate)) {
                 statePause = 'Idle'
             }
         } else if (statePause === 'Add') {
+            if (addMode === 'Soft') {
+                if (pointInsideRectArray(x, y, UI.addSoft)) {
+                    statePause = 'Idle'
+                    addMode = ''
+                    addPhase = ''
+                    dragged = false
+                }
+            }
+
+            if (addMode === 'Static') {
+                if (pointInsideRectArray(x, y, UI.addStatic)) {
+                    statePause = 'Idle'
+                    addMode = ''
+                    addPhase = ''
+                    dragged = false
+                }
+            }
+            
             if (addPhase === 'Drag') {
                 if (pointInsideRectArray(x, y, UI.next)) {
                     addPhase = 'InputDepth'
@@ -137,6 +179,25 @@ function mouseUpUIScene(x, y, button) {
                     addObject()
                     addMode = ''
                 }
+            }
+        } else if (statePause === 'Edit') {
+            if (pointInsideRectArray(x, y, UI.edit)) {
+                statePause = 'Idle'
+                selected = [-1, -1]
+            } else if (pointInsideRectArray(x, y, UI.remove)) {
+                removeObject()
+                selected = [-1, -1]
+            }
+
+            if (selected[0] != -1) {
+                if (pointInsideRectArray(x, y, UI.move)) {
+                    statePause = 'EditMove'
+                }
+            }
+        } else if (statePause === 'EditMove') {
+            if (pointInsideRectArray(x, y, UI.move)) {
+                statePause = 'Idle'
+                selected = [-1, -1]
             }
         }
     }

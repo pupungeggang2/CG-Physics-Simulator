@@ -1,6 +1,13 @@
 // UI initialization. Called every frame
 function drawSceneUIInit() {
     contextNum.font = '32px neodgm'
+    contextNum.textAlign = 'left'
+    contextNum.textBaseline = 'top'
+    contextNum.fillStyle = 'Black'
+    contextNum.strokeStyle = 'Black'
+    contextNum.lineWidth = 4
+    contextNum.clearRect(0, 0, 240, 320)
+
     contextUI.font = '32px neodgm'
     contextUI.textAlign = 'left'
     contextUI.textBaseline = 'top'
@@ -11,12 +18,31 @@ function drawSceneUIInit() {
 }
 
 function drawUI() {
-    contextNum.clearRect(0, 0, 240, 320)
-    contextNum.textAlign = 'left'
-    contextNum.textBaseline = 'top'
-    contextNum.fillStyle = 'Black'
-    contextNum.strokeStyle = 'Black'
-    contextNum.lineWidth = 4
+    if (state === 'Pause') {
+        if (statePause === 'Idle') {
+            contextUI.fillText('Soft Body Physics Simulator (Paused)', UI.text1[0], UI.text1[1])
+        } else if (statePause === 'Rotate') {
+            contextUI.fillText('Drag Mouse to Rotate', UI.text1[0], UI.text1[1])
+        } else if (statePause === 'Add') {
+            if (addPhase === 'Drag') {
+                contextUI.fillText('Drag mouse to select area', UI.text1[0], UI.text1[1])
+            } else if (addPhase === 'InputDepth') {
+                contextUI.fillText('Enter Depth', UI.text1[0], UI.text1[1])
+                contextUI.fillText(`Depth : ${input.numDepth}`, UI.text2[0], UI.text2[1])
+                contextUI.fillText(`Angle : ${input.numAngle}`, UI.text22[0], UI.text22[1])
+            } else if (addPhase === 'InputAngle') {
+                contextUI.fillText('Enter Angle', UI.text1[0], UI.text1[1])
+                contextUI.fillText(`Depth : ${input.numDepth}`, UI.text2[0], UI.text2[1])
+                contextUI.fillText(`Angle : ${input.numAngle}`, UI.text22[0], UI.text22[1])
+            }
+        } else if (statePause === 'Edit') {
+            contextUI.fillText('Select Object', UI.text1[1], UI.text1[1])
+        } else if (statePause === 'EditMove') {
+            contextUI.fillText('Move object by drag mouse.', UI.text1[0], UI.text1[1])
+        }
+    } else if (state === 'Running') {
+        contextUI.fillText('Soft Body Physics Simulator (Running)', UI.text1[0], UI.text1[1])
+    }
 
     for (let i = 0; i < 10; i++) {
         contextNum.strokeRect(UI.number[i][0], UI.number[i][1], UI.number[i][2], UI.number[i][3])
@@ -49,15 +75,16 @@ function drawUI() {
             contextUI.drawImage(img.selectFrame, UI.addSoft[0], UI.addSoft[1])
         }
     }
-
-    if (statePause === 'Add') {
-        if (addPhase === 'InputDepth' || addPhase === 'InputAngle') {
-            contextUI.fillText(`Depth : ${input.numDepth}`, UI.text2[0], UI.text2[1])
-            contextUI.fillText(`Angle : ${input.numAngle}`, UI.text22[0], UI.text22[1])
-        }
-    }
     
     contextUI.drawImage(img.edit, UI.edit[0], UI.edit[1])
     contextUI.drawImage(img.move, UI.move[0], UI.move[1])
     contextUI.drawImage(img.remove, UI.remove[0], UI.remove[1])
+
+    if (state === 'Pause') {
+        if (statePause === 'Edit') {
+            contextUI.drawImage(img.selectFrame, UI.edit[0], UI.edit[1])
+        } else if (statePause === 'Move') {
+            contextUI.drawImage(img.selectFrame, UI.move[0], UI.move[1])
+        }
+    }
 }
