@@ -83,7 +83,7 @@ function drawUI() {
     if (state === 'Pause') {
         if (statePause === 'Edit') {
             contextUI.drawImage(img.selectFrame, UI.edit[0], UI.edit[1])
-        } else if (statePause === 'Move') {
+        } else if (statePause === 'EditMove') {
             contextUI.drawImage(img.selectFrame, UI.move[0], UI.move[1])
         }
     }

@@ -39,6 +39,7 @@ let input = {
 }
 
 let selected = [-1, -1]
+let back = []
 
 // Variables related to space
 let bodyListSoft = []

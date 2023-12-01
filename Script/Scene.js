@@ -1,6 +1,10 @@
 function loopScene() {
     displayUI()
     display()
+
+    if (state === 'Running') {
+        moveObject()
+    }
 }
 
 function displayUI() {
@@ -48,7 +52,7 @@ function mouseUpScene(x, y, button) {
             }
 
             if (s === false) {
-                for (let i = 0; i < GLBodyListStatic.length; i++) {
+                for (let i = 0; i < GLBodyListSoft.length; i++) {
                     if (pointInsidePolygonArray(position3D[0], position3D[1], [[GLBodyListSoft[i][0][0], GLBodyListSoft[i][0][1]], [GLBodyListSoft[i][1][0], GLBodyListSoft[i][1][1]], [GLBodyListSoft[i][2][0], GLBodyListSoft[i][2][1]], [GLBodyListSoft[i][3][0], GLBodyListSoft[i][3][1]]])) {
                         selected = [1, i]
                         s = true
@@ -78,6 +82,14 @@ function mouseDownScene(x, y, button) {
                     input.mouseRect2 = [position3D[0], position3D[1]]
                 }
             }
+        } else if (statePause === 'EditMove') {
+            if (selected[0] === 0) {
+                back = JSON.parse(JSON.stringify(GLBodyListStatic[selected[1]]))
+            } else if (selected[0] === 1) {
+                back = JSON.parse(JSON.stringify(GLBodyListSoft[selected[1]]))
+            }
+
+            input.mouseEdit1 = convert2Dto3D(gPosition[0], gPosition[1])
         }
     }
 }
@@ -107,6 +119,25 @@ function mouseMoveScene(x, y, button) {
                 //debug.innerHTML = `${input.mouseRect1}|${input.mouseRect2}`
             }
         }
+    } else if (statePause === 'EditMove') {
+        if (input.mousePressed === true) {
+            let position3D = convert2Dto3D(gPosition[0], gPosition[1])
+            let difference = [position3D[0] - input.mouseEdit1[0], position3D[1] - input.mouseEdit1[1], 0]
+            let differenceMove = applyTransform(systemTransform, difference)
+        
+            if (selected[0] === 0) {
+                for (let i = 0; i < 8; i++) {
+                    GLBodyListStatic[selected[1]][i] = applyTransform(matrixTranslate(differenceMove[0], differenceMove[1], differenceMove[2]), GLBodyListStatic[selected[1]][i])
+                    console.log(1)
+                }
+            } else if (selected[0] === 1) {
+                for (let i = 0; i < 8; i++) {
+                    GLBodyListSoft[selected[1]][i] = applyTransform(matrixTranslate(differenceMove[0], differenceMove[1], differenceMove[2]), GLBodyListSoft[selected[1]][i])
+                }
+            }
+
+            input.mouseEdit1 = convert2Dto3D(position3D[0], position3D[1])
+        }
     }
     
     input.mousePrevious = gPosition
@@ -134,6 +165,8 @@ function mouseUpUIScene(x, y, button) {
             } else if (pointInsideRectArray(x, y, UI.edit)) {
                 statePause = 'Edit'
                 selected = [-1, -1]
+            } else if (pointInsideRectArray(x, y, UI.pause)) {
+                state = 'Running'
             }
         } else if (statePause === 'Rotate') {
             if (pointInsideRectArray(x, y, UI.rotate)) {
@@ -199,6 +232,10 @@ function mouseUpUIScene(x, y, button) {
                 statePause = 'Idle'
                 selected = [-1, -1]
             }
+        }
+    } else if (state === 'Running') {
+        if (pointInsideRectArray(x, y, UI.pause)) {
+            state = 'Pause'
         }
     }
 }

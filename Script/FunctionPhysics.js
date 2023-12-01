@@ -32,7 +32,7 @@ function pointInsidePolygonArray(x, y, point) {
     return crossCount % 2 === 1
 }
 
-function collisionCheck() {
+function collisionCheck(cuboid1, cuboid2) {
     
 }
 
