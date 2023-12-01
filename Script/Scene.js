@@ -128,7 +128,6 @@ function mouseMoveScene(x, y, button) {
             if (selected[0] === 0) {
                 for (let i = 0; i < 8; i++) {
                     GLBodyListStatic[selected[1]][i] = applyTransform(matrixTranslate(differenceMove[0], differenceMove[1], differenceMove[2]), GLBodyListStatic[selected[1]][i])
-                    console.log(1)
                 }
             } else if (selected[0] === 1) {
                 for (let i = 0; i < 8; i++) {
