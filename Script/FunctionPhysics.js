@@ -79,9 +79,9 @@ function moveObject() {
         let tempPosition = moveCuboid([physicsSoft[i]['Velocity'][0] * delta / 1000, physicsSoft[i]['Velocity'][1] * delta / 1000, physicsSoft[i]['Velocity'][2] * delta / 1000], GLBodyListSoft[i])
         for (let j = 0; j < GLBodyListStatic.length; j++) {
             let centerLowerSoft = (tempPosition[0][1] + tempPosition[1][1] + tempPosition[4][1] + tempPosition[5][1]) / 4
-            let centerUpperStaticY = (GLBodyListStatic[i][2][1] + GLBodyListStatic[i][3][1] + GLBodyListStatic[i][6][1] + GLBodyListStatic[i][7][1]) / 4
+            let centerUpperStaticY = (GLBodyListStatic[j][2][1] + GLBodyListStatic[j][3][1] + GLBodyListStatic[j][6][1] + GLBodyListStatic[j][7][1]) / 4
 
-            if (collisionCheck(tempPosition, GLBodyListStatic[i]) && centerLowerSoft < centerUpperStaticY) {
+            if (collisionCheck(tempPosition, GLBodyListStatic[j]) && centerLowerSoft < centerUpperStaticY) {
                 tempPosition = moveCuboid([0, centerUpperStaticY - centerLowerSoft, 0], tempPosition)
                 physicsSoft[i]['Velocity'][1] = 0
                 //debug.innerHTML = centerUpperStaticY - centerLowerSoft
