@@ -63,6 +63,40 @@ function mouseUpScene(x, y, button) {
             if (s === false) {
                 selected = [-1, -1]
             }
+        } else if (statePause === 'EditMove') {
+            if (selected[0] === 0) {
+                for (let i = 0; i < GLBodyListStatic.length; i++) {
+                    if (selected[1] != i) {
+                        if (collisionCheck(GLBodyListStatic[i], GLBodyListStatic[selected[1]])) {
+                            GLBodyListStatic[selected[1]] = back
+                            break
+                        }
+                    }
+                }
+
+                for (let i = 0; i < GLBodyListSoft.length; i++) {
+                    if (collisionCheck(GLBodyListSoft[i], GLBodyListStatic[selected[1]])) {
+                        GLBodyListStatic[selected[1]] = back
+                        break
+                    }
+                }
+            } else if (selected[0] === 1) {
+                for (let i = 0; i < GLBodyListStatic.length; i++) {
+                    if (collisionCheck(GLBodyListStatic[i], GLBodyListSoft[selected[1]])) {
+                        GLBodyListSoft[selected[1]] = back
+                        break
+                    }
+                }
+
+                for (let i = 0; i < GLBodyListSoft.length; i++) {
+                    if (selected[1] != i) {
+                        if (collisionCheck(GLBodyListSoft[i], GLBodyListSoft[selected[1]])) {
+                            GLBodyListSoft[selected[1]] = back
+                            break
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -73,23 +107,37 @@ function mouseDownScene(x, y, button) {
     if (button === 0) {
         input.mousePressed = true
 
-        if (statePause === 'Add') {
-            if (addPhase === 'Drag') {
-                let position3D = convert2Dto3D(gPosition[0], gPosition[1])
-                
-                if (position3D[0] > -0.8 && position3D[0] < 0.8 && position3D[1] > -0.8 && position3D[1] < 0.8) {
-                    input.mouseRect1 = [position3D[0], position3D[1]]
-                    input.mouseRect2 = [position3D[0], position3D[1]]
+        if (state === 'Pause') {
+            if (statePause === 'Add') {
+                if (addPhase === 'Drag') {
+                    let position3D = convert2Dto3D(gPosition[0], gPosition[1])
+                    
+                    if (position3D[0] > -0.8 && position3D[0] < 0.8 && position3D[1] > -0.8 && position3D[1] < 0.8) {
+                        input.mouseRect1 = [position3D[0], position3D[1]]
+                        input.mouseRect2 = [position3D[0], position3D[1]]
+                    }
+                }
+            } else if (statePause === 'EditMove') {
+                if (selected[0] === 0) {
+                    back = JSON.parse(JSON.stringify(GLBodyListStatic[selected[1]]))
+                } else if (selected[0] === 1) {
+                    back = JSON.parse(JSON.stringify(GLBodyListSoft[selected[1]]))
+                }
+
+                input.mouseEdit1 = convert2Dto3D(gPosition[0], gPosition[1])
+            }
+        } else if (state === 'Running') {
+            if (stateRunning === 'Rotate') {
+                if (input.mousePressed === true) {
+                    let diff = [input.mousePrevious[0] - gPosition[0], input.mousePrevious[1] - gPosition[1]]
+                    let previousTransform = JSON.parse(JSON.stringify(systemTransformInverse))
+                    systemTransform = matrixMultiply(matrixRotate(1, diff[0] * -40), systemTransform)
+                    systemTransform = matrixMultiply(matrixRotate(0, diff[1] * 40), systemTransform)
+                    systemTransformInverse = matrixMultiply(matrixRotate(0, diff[1] * -40), matrixIdentity())
+                    systemTransformInverse = matrixMultiply(matrixRotate(1, diff[0] * 40), systemTransformInverse)
+                    systemTransformInverse = matrixMultiply(previousTransform, systemTransformInverse)
                 }
             }
-        } else if (statePause === 'EditMove') {
-            if (selected[0] === 0) {
-                back = JSON.parse(JSON.stringify(GLBodyListStatic[selected[1]]))
-            } else if (selected[0] === 1) {
-                back = JSON.parse(JSON.stringify(GLBodyListSoft[selected[1]]))
-            }
-
-            input.mouseEdit1 = convert2Dto3D(gPosition[0], gPosition[1])
         }
     }
 }
@@ -97,48 +145,61 @@ function mouseDownScene(x, y, button) {
 function mouseMoveScene(x, y, button) {
     let gPosition = [(x - canvas.width / 2) / (canvas.width / 2), (-(y - canvas.height / 2)) / (canvas.height / 2)]
     
-    if (statePause === 'Rotate') {
-        if (input.mousePressed === true) {
-            let diff = [input.mousePrevious[0] - gPosition[0], input.mousePrevious[1] - gPosition[1]]
-            let previousTransform = JSON.parse(JSON.stringify(systemTransformInverse))
-            systemTransform = matrixMultiply(matrixRotate(1, diff[0] * -40), systemTransform)
-            systemTransform = matrixMultiply(matrixRotate(0, diff[1] * 40), systemTransform)
-            systemTransformInverse = matrixMultiply(matrixRotate(0, diff[1] * -40), matrixIdentity())
-            systemTransformInverse = matrixMultiply(matrixRotate(1, diff[0] * 40), systemTransformInverse)
-            systemTransformInverse = matrixMultiply(previousTransform, systemTransformInverse)
-        }
-    } else if (statePause === 'Add') {
-        if (addPhase === 'Drag') {
+    if (state === 'Pause') {
+        if (statePause === 'Rotate') {
+            if (input.mousePressed === true) {
+                let diff = [input.mousePrevious[0] - gPosition[0], input.mousePrevious[1] - gPosition[1]]
+                let previousTransform = JSON.parse(JSON.stringify(systemTransformInverse))
+                systemTransform = matrixMultiply(matrixRotate(1, diff[0] * -40), systemTransform)
+                systemTransform = matrixMultiply(matrixRotate(0, diff[1] * 40), systemTransform)
+                systemTransformInverse = matrixMultiply(matrixRotate(0, diff[1] * -40), matrixIdentity())
+                systemTransformInverse = matrixMultiply(matrixRotate(1, diff[0] * 40), systemTransformInverse)
+                systemTransformInverse = matrixMultiply(previousTransform, systemTransformInverse)
+            }
+        } else if (statePause === 'Add') {
+            if (addPhase === 'Drag') {
+                if (input.mousePressed === true) {
+                    let position3D = convert2Dto3D(gPosition[0], gPosition[1])
+
+                    if (position3D[0] > -0.8 && position3D[0] < 0.8 && position3D[1] > -0.8 && position3D[1] < 0.8) {
+                        input.mouseRect2 = [position3D[0], position3D[1]]
+                    }
+
+                    //debug.innerHTML = `${input.mouseRect1}|${input.mouseRect2}`
+                }
+            }
+        } else if (statePause === 'EditMove') {
             if (input.mousePressed === true) {
                 let position3D = convert2Dto3D(gPosition[0], gPosition[1])
-
-                if (position3D[0] > -0.8 && position3D[0] < 0.8 && position3D[1] > -0.8 && position3D[1] < 0.8) {
-                    input.mouseRect2 = [position3D[0], position3D[1]]
+                let difference = [position3D[0] - input.mouseEdit1[0], position3D[1] - input.mouseEdit1[1], 0]
+                let differenceMove = applyTransform(systemTransform, difference)
+            
+                if (selected[0] === 0) {
+                    for (let i = 0; i < 8; i++) {
+                        GLBodyListStatic[selected[1]][i] = applyTransform(matrixTranslate(differenceMove[0], differenceMove[1], differenceMove[2]), GLBodyListStatic[selected[1]][i])
+                    }
+                } else if (selected[0] === 1) {
+                    for (let i = 0; i < 8; i++) {
+                        GLBodyListSoft[selected[1]][i] = applyTransform(matrixTranslate(differenceMove[0], differenceMove[1], differenceMove[2]), GLBodyListSoft[selected[1]][i])
+                    }
                 }
 
-                //debug.innerHTML = `${input.mouseRect1}|${input.mouseRect2}`
+                input.mouseEdit1 = convert2Dto3D(position3D[0], position3D[1])
             }
         }
-    } else if (statePause === 'EditMove') {
-        if (input.mousePressed === true) {
-            let position3D = convert2Dto3D(gPosition[0], gPosition[1])
-            let difference = [position3D[0] - input.mouseEdit1[0], position3D[1] - input.mouseEdit1[1], 0]
-            let differenceMove = applyTransform(systemTransform, difference)
-        
-            if (selected[0] === 0) {
-                for (let i = 0; i < 8; i++) {
-                    GLBodyListStatic[selected[1]][i] = applyTransform(matrixTranslate(differenceMove[0], differenceMove[1], differenceMove[2]), GLBodyListStatic[selected[1]][i])
-                }
-            } else if (selected[0] === 1) {
-                for (let i = 0; i < 8; i++) {
-                    GLBodyListSoft[selected[1]][i] = applyTransform(matrixTranslate(differenceMove[0], differenceMove[1], differenceMove[2]), GLBodyListSoft[selected[1]][i])
-                }
+    } else if (state === 'Running') {
+        if (stateRunning === 'Rotate') {
+            if (input.mousePressed === true) {
+                let diff = [input.mousePrevious[0] - gPosition[0], input.mousePrevious[1] - gPosition[1]]
+                let previousTransform = JSON.parse(JSON.stringify(systemTransformInverse))
+                systemTransform = matrixMultiply(matrixRotate(1, diff[0] * -40), systemTransform)
+                systemTransform = matrixMultiply(matrixRotate(0, diff[1] * 40), systemTransform)
+                systemTransformInverse = matrixMultiply(matrixRotate(0, diff[1] * -40), matrixIdentity())
+                systemTransformInverse = matrixMultiply(matrixRotate(1, diff[0] * 40), systemTransformInverse)
+                systemTransformInverse = matrixMultiply(previousTransform, systemTransformInverse)
             }
-
-            input.mouseEdit1 = convert2Dto3D(position3D[0], position3D[1])
         }
     }
-    
     input.mousePrevious = gPosition
 }
 
@@ -233,8 +294,16 @@ function mouseUpUIScene(x, y, button) {
             }
         }
     } else if (state === 'Running') {
-        if (pointInsideRectArray(x, y, UI.pause)) {
-            state = 'Pause'
+        if (stateRunning === 'Idle') {
+            if (pointInsideRectArray(x, y, UI.pause)) {
+                state = 'Pause'
+            } else if (pointInsideRectArray(x, y, UI.rotate)) {
+                stateRunning = 'Rotate'
+            }
+        } else if (stateRunning === 'Rotate') {
+            if (pointInsideRectArray(x, y, UI.rotate)) {
+                stateRunning = 'Idle'
+            }
         }
     }
 }

@@ -41,9 +41,9 @@ let input = {
 let selected = [-1, -1]
 let back = []
 
-// Variables related to space
-let bodyListSoft = []
-let bodyListStatic = []
+let physicsSoft = [
+
+]
 
 // Variables related to 3D Implementation
 let matrixView = [

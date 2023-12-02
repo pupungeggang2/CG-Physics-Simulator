@@ -68,10 +68,29 @@ function addObject() {
         rotatedVertex.push(tempVertex)
     }
 
-    if (addMode === 'Static') {
-        GLBodyListStatic.push(rotatedVertex)
-    } else if (addMode === 'Soft') {
-        GLBodyListSoft.push(rotatedVertex)
+    let collided = false
+
+    for (let i = 0; i < GLBodyListStatic.length; i++) {
+        if (collisionCheck(GLBodyListStatic[i], rotatedVertex)) {
+            collided = true
+            break
+        }
+    }
+
+    for (let i = 0; i < GLBodyListSoft.length; i++) {
+        if (collisionCheck(GLBodyListSoft[i], rotatedVertex)) {
+            collided = true
+            break
+        }
+    }
+
+    if (collided === false) {
+        if (addMode === 'Static') {
+            GLBodyListStatic.push(rotatedVertex)
+        } else if (addMode === 'Soft') {
+            GLBodyListSoft.push(rotatedVertex)
+            physicsSoft.push({'Velocity' : [0, -0.05, 0]})
+        }
     }
 }
 
@@ -80,9 +99,6 @@ function removeObject() {
         GLBodyListStatic.splice(selected[1], 1)
     } else if (selected[0] === 1) {
         GLBodyListSoft.splice(selected[1], 1)
+        physicsSoft.splice(selected[i], 1)
     }
-}
-
-function insertBody() {
-    
 }

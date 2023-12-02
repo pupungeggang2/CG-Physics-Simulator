@@ -49,7 +49,7 @@ function drawBodies() {
 
     for (let i = 0; i < GLBodyListSoft.length; i++) {
         if (selected[0] === 1 && selected[1] === i) {
-            drawCuboid(GLBodyListStatic[i], colorSelected)
+            drawCuboid(GLBodyListSoft[i], colorSelected)
         } else {
             drawCuboid(GLBodyListSoft[i], colorSoft)
         }

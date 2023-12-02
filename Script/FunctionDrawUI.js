@@ -87,4 +87,10 @@ function drawUI() {
             contextUI.drawImage(img.selectFrame, UI.move[0], UI.move[1])
         }
     }
+
+    if (state === 'Running') {
+        if (stateRunning === 'Rotate') {
+            contextUI.drawImage(img.selectFrame, UI.rotate[0], UI.rotate[1])
+        }
+    }
 }
